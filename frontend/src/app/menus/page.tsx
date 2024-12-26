@@ -1,8 +1,8 @@
 import React from 'react'
 import SaveForm from '@/components/SaveForm'
 import Hierarchy from '@/components/Hierarchy'
-import SelectMenu from './_components/SelectMenu'
-import ExpandCollapse from './_components/ExpandCollapse'
+import SelectMenu from './components/SelectMenu'
+import ExpandCollapse from './components/ExpandCollapse'
 
 function Menus() {
   return (
