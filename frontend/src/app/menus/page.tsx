@@ -1,10 +1,18 @@
-import MenuForm from '../../components/MenuForm';
+import React from 'react'
+import SaveForm from '@/components/SaveForm'
+import Hierarchy from '@/components/Hierarchy'
+import SelectMenu from './_components/SelectMenu'
+import ExpandCollapse from './_components/ExpandCollapse'
 
-const CreateMenu: React.FC = () => (
-  <div>
-    <h1>Create Menu</h1>
-    <MenuForm />
-  </div>
-);
+function Menus() {
+  return (
+    <div>
+      <SelectMenu />
+      <ExpandCollapse />
+      <Hierarchy />
+      <SaveForm />
+    </div>
+  )
+}
 
-export default CreateMenu;
+export default Menus

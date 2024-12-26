@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Sidebar from "@/components/Sidebar";
+import Breadcrumb from "@/components/Breadcrumb";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,7 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Sidebar>
-        {children}
+          <Breadcrumb />
+          <h1 className="text-5xl font-extrabold">Heading 1</h1>
+          {children}
         </Sidebar>
       </body>
     </html>
