@@ -33,11 +33,11 @@ describe('MenuService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('findAll', () => {
+  describe('findMany', () => {
     it('should return an array of menus', async () => {
       const mockMenus = [
-        { id: '1', name: 'Menu 1', depth: 0 },
-        { id: '2', name: 'Menu 2', depth: 1 },
+        { id: '1', name: 'Menu 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date() },
+        { id: '2', name: 'Menu 2', depth: 1, parentId: '1', createdAt: new Date(), updatedAt: new Date() },
       ];
       jest.spyOn(prisma.menu, 'findMany').mockResolvedValue(mockMenus);
 
@@ -49,19 +49,19 @@ describe('MenuService', () => {
 
   describe('findById', () => {
     it('should return a menu by ID', async () => {
-      const mockMenu = { id: '1', name: 'Menu 1', depth: 0 };
+      const mockMenu = { id: '1', name: 'Menu 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(prisma.menu, 'findUnique').mockResolvedValue(mockMenu);
 
       const result = await service.getMenuById('1');
       expect(result).toEqual(mockMenu);
-      expect(prisma.menu.findUnique).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(prisma.menu.findUnique).toHaveBeenCalledWith({ include: { children: true, parent: true }, where: { id: '1' } });
     });
   });
 
   describe('create', () => {
     it('should create a menu', async () => {
       const newMenu = { name: 'Menu 1', depth: 0, parentId: null };
-      const createdMenu = { id: '1', ...newMenu };
+      const createdMenu = { id: '1', ...newMenu, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(prisma.menu, 'create').mockResolvedValue(createdMenu);
 
       const result = await service.createMenu(newMenu);
@@ -73,7 +73,7 @@ describe('MenuService', () => {
   describe('update', () => {
     it('should update a menu', async () => {
       const updateData = { name: 'Updated Menu', depth: 1 };
-      const updatedMenu = { id: '1', ...updateData };
+      const updatedMenu = { id: '1', ...updateData, parentId: null, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(prisma.menu, 'update').mockResolvedValue(updatedMenu);
 
       const result = await service.updateMenu('1', updateData);
@@ -87,7 +87,7 @@ describe('MenuService', () => {
 
   describe('delete', () => {
     it('should delete a menu', async () => {
-      const deletedMenu = { id: '1', name: 'Menu 1', depth: 0 };
+      const deletedMenu = { id: '1', name: 'Menu 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(prisma.menu, 'delete').mockResolvedValue(deletedMenu);
 
       const result = await service.deleteMenu('1');

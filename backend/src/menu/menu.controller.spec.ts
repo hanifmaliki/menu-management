@@ -13,11 +13,11 @@ describe('MenuController', () => {
         {
           provide: MenuService,
           useValue: {
-            findAll: jest.fn(),
-            findById: jest.fn(),
-            create: jest.fn(),
-            update: jest.fn(),
-            delete: jest.fn(),
+            getMenus: jest.fn(),
+            getMenuById: jest.fn(),
+            createMenu: jest.fn(),
+            updateMenu: jest.fn(),
+            deleteMenu: jest.fn(),
           },
         },
       ],
@@ -31,11 +31,15 @@ describe('MenuController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('findAll', () => {
+  describe('findMany', () => {
     it('should return an array of menus', async () => {
       const mockMenus = [
-        { id: '1', name: 'Menu 1', depth: 0 },
-        { id: '2', name: 'Menu 2', depth: 1 },
+        { id: '1', name: 'Menu 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date(),
+          children: [{id: '3', name: 'Children 1', depth: 1, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
+         },
+        { id: '2', name: 'Menu 2', depth: 1, parentId: '1', createdAt: new Date(), updatedAt: new Date(),
+          children: [{id: '4', name: 'Children 2', depth: 1, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
+         },
       ];
       jest.spyOn(service, 'getMenus').mockResolvedValue(mockMenus);
 
@@ -47,7 +51,10 @@ describe('MenuController', () => {
 
   describe('findById', () => {
     it('should return a menu by ID', async () => {
-      const mockMenu = { id: '1', name: 'Menu 1', depth: 0 };
+      const mockMenu = { id: '2', name: 'Menu 1', depth: 1, parentId: null, createdAt: new Date(), updatedAt: new Date() ,
+        parent: {id: '1', name: 'Parent 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date()},
+        children: [{id: '3', name: 'Children 1', depth: 2, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
+      };
       jest.spyOn(service, 'getMenuById').mockResolvedValue(mockMenu);
 
       const result = await controller.getMenuById('1');
@@ -59,7 +66,7 @@ describe('MenuController', () => {
   describe('create', () => {
     it('should create a menu', async () => {
       const newMenu = { name: 'Menu 1', depth: 0, parentId: null };
-      const createdMenu = { id: '1', ...newMenu };
+      const createdMenu = { id: '1', ...newMenu, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(service, 'createMenu').mockResolvedValue(createdMenu);
 
       const result = await controller.createMenu(newMenu);
@@ -71,7 +78,7 @@ describe('MenuController', () => {
   describe('update', () => {
     it('should update a menu', async () => {
       const updateData = { name: 'Updated Menu', depth: 1 };
-      const updatedMenu = { id: '1', ...updateData };
+      const updatedMenu = { id: '1', ...updateData, parentId: null, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(service, 'updateMenu').mockResolvedValue(updatedMenu);
 
       const result = await controller.updateMenu('1', updateData);
@@ -82,7 +89,7 @@ describe('MenuController', () => {
 
   describe('delete', () => {
     it('should delete a menu', async () => {
-      const deletedMenu = { id: '1', name: 'Menu 1', depth: 0 };
+      const deletedMenu = { id: '1', name: 'Menu 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date() };
       jest.spyOn(service, 'deleteMenu').mockResolvedValue(deletedMenu);
 
       const result = await controller.deleteMenu('1');
