@@ -1,5 +1,6 @@
 "use client";
 
+import { Widgets } from '@mui/icons-material';
 import Folder from '@mui/icons-material/Folder';
 import FolderOutlined from '@mui/icons-material/FolderOutlined';
 import MenuOpen from '@mui/icons-material/MenuOpen';
@@ -83,12 +84,12 @@ function Sidebar ({ children }) {
                     [
                       { name: "System Code", url: "/system-code" },
                       { name: "Properties", url: "/properties" },
-                      { name: "Menus", url: "/menus" },
+                      { name: "Menus", url: "/menus", icon: <Widgets /> },
                       { name: "API List", url: "/api-list" },
                     ].map(item =>
                       <li key={item.name}>
                         <a href={item.url} className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black">
-                          <WidgetsOutlined />
+                          {item.icon || <WidgetsOutlined />}
                           <span className="ms-3">{item.name}</span>
                         </a>
                       </li>
