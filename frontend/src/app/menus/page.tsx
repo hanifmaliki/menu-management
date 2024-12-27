@@ -64,19 +64,46 @@ function Menus() {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <SelectMenu
         menus={rootMenus}
         selectedMenuID={selectedMenuID}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedMenuID(e.target.value)}
       />
-      <ExpandCollapse />
-      <Hierarchy menus={menus} selectedMenuID={selectedMenuID} selectItem={(mode, item) => {
-        setFormMode(mode)
-        setFormItem(menus.find(menu => menu.id === item.id))
-      }} />
-      {formMode == 'update' && <SaveForm item={formItem} onSubmit={updateMenuHandler} />}
-      {formMode == 'create' && <CreateForm item={formItem} onSubmit={createMenuHandler} />}
+      <div className="flex flex-col md:flex-row gap-4 mt-4">
+        {/* Hierarchy and ExpandCollapse Section */}
+        <div className="md:w-1/2">
+          <ExpandCollapse />
+          <Hierarchy
+            menus={menus}
+            selectedMenuID={selectedMenuID}
+            selectItem={(mode, item) => {
+              setFormMode(mode);
+              setFormItem(menus.find(menu => menu.id === item.id));
+            }}
+          />
+        </div>
+
+        {/* Form Section - Visible on Larger Screens */}
+        <div className="hidden md:block md:w-1/2">
+          {formMode === 'update' && (
+            <SaveForm item={formItem} onSubmit={updateMenuHandler} />
+          )}
+          {formMode === 'create' && (
+            <CreateForm item={formItem} onSubmit={createMenuHandler} />
+          )}
+        </div>
+      </div>
+
+      {/* Form Section - Visible on Mobile */}
+      <div className="block md:hidden mt-8">
+        {formMode === 'update' && (
+          <SaveForm item={formItem} onSubmit={updateMenuHandler} />
+        )}
+        {formMode === 'create' && (
+          <CreateForm item={formItem} onSubmit={createMenuHandler} />
+        )}
+      </div>
     </div>
   )
 }
