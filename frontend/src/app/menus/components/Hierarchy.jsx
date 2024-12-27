@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function SubMenus ({ subMenus, menus, selectItem = (mode, item) => { }, expandedItems }) {
   return (
@@ -54,6 +54,19 @@ function SubMenus ({ subMenus, menus, selectItem = (mode, item) => { }, expanded
 function Hierarchy ({ menus, selectedMenuID, selectItem = (mode, item) => { } }) {
   const [expandedItems, setExpandedItems] = useState({});
 
+  useEffect(() => {
+    // Initialize expandedItems with all items expanded
+    const newExpandedItems = {};
+    const expandRecursively = (items) => {
+      items.forEach((item) => {
+        newExpandedItems[item.id] = true;
+        if (item.children) expandRecursively(item.children);
+      });
+    };
+    expandRecursively(menus);
+    setExpandedItems(newExpandedItems);
+  }, [menus]);
+
   const toggleItem = (id) => {
     setExpandedItems((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -81,7 +94,7 @@ function Hierarchy ({ menus, selectedMenuID, selectItem = (mode, item) => { } })
 
   return (
     <div>
-      <div className="mb-4 flex gap-2">
+      <div className="my-2 flex gap-2">
         <button
           onClick={expandAll}
           className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-3xl text-sm px-5 py-2.5 me-2 mb-2"
