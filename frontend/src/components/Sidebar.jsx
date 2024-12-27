@@ -6,6 +6,7 @@ import FolderOutlined from '@mui/icons-material/FolderOutlined';
 import MenuOpen from '@mui/icons-material/MenuOpen';
 import WidgetsOutlined from '@mui/icons-material/WidgetsOutlined';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 function Sidebar ({ children }) {
@@ -80,37 +81,39 @@ function Sidebar ({ children }) {
               </button>
               {isSystemsMenuOpen && (
                 <ul className="py-2 space-y-2 bg-gray-700 rounded-lg">
-                  {
-                    [
-                      { name: "System Code", url: "/system-code" },
-                      { name: "Properties", url: "/properties" },
-                      { name: "Menus", url: "/menus", icon: <Widgets /> },
-                      { name: "API List", url: "/api-list" },
-                    ].map(item =>
-                      <li key={item.name}>
-                        <a href={item.url} className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black">
-                          {item.icon || <WidgetsOutlined />}
-                          <span className="ms-3">{item.name}</span>
-                        </a>
-                      </li>
-                    )
-                  }
+                  {[
+                    { name: "System Code", url: "/system-code" },
+                    { name: "Properties", url: "/properties" },
+                    { name: "Menus", url: "/menus", icon: <Widgets /> },
+                    { name: "API List", url: "/api-list" },
+                  ].map(item => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.url}
+                        className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black"
+                      >
+                        {item.icon || <WidgetsOutlined />}
+                        <span className="ms-3">{item.name}</span>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               )}
             </li>
-            {
-              [
-                { name: "Users & Group", url: "/users-group" },
-                { name: "Competition", url: "/competition" },
-              ].map(item =>
-                <li key={item.name}>
-                  <a href={item.url} className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black">
-                    <FolderOutlined />
-                    <span className="ms-3">{item.name}</span>
-                  </a>
-                </li>
-              )
-            }
+            {[
+              { name: "Users & Group", url: "/users-group" },
+              { name: "Competition", url: "/competition" },
+            ].map(item => (
+              <li key={item.name}>
+                <Link
+                  href={item.url}
+                  className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black"
+                >
+                  <FolderOutlined />
+                  <span className="ms-3">{item.name}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </aside>
