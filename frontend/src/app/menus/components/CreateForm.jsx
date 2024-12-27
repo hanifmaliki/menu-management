@@ -15,11 +15,11 @@ function CreateForm ({ item, onSubmit = (item) => { } }) {
     <form className="max-w-sm" onSubmit={e => { e.preventDefault(); onSubmit(submittedItem) }}>
       <div className="mb-5">
         <label htmlFor="depth" className="block mb-2 text-sm font-medium text-gray-900">Depth</label>
-        <input value={item?.depth + 1 || 0} disabled type="number" id="depth" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        <input value={item?.depth + 1 || 0} disabled type="number" id="depth" className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 opacity-50 cursor-not-allowed" />
       </div>
       <div className="mb-5">
         <label htmlFor="parent" className="block mb-2 text-sm font-medium text-gray-900">Parent Data</label>
-        <input value={item?.name || ''} disabled type="text" id="parent" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        <input value={item?.name || ''} disabled type="text" id="parent" className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 opacity-50 cursor-not-allowed" />
       </div>
       <div className="mb-5">
         <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">Name</label>

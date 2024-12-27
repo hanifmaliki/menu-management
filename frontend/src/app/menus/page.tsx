@@ -3,7 +3,6 @@
 import { createMenu, getMenus, updateMenu } from '@/services/api';
 import { useEffect, useState } from 'react';
 import CreateForm from './components/CreateForm';
-import ExpandCollapse from './components/ExpandCollapse';
 import Hierarchy from './components/Hierarchy';
 import SaveForm from './components/SaveForm';
 import SelectMenu from './components/SelectMenu';
@@ -73,7 +72,6 @@ function Menus() {
       <div className="flex flex-col md:flex-row gap-4 mt-4">
         {/* Hierarchy and ExpandCollapse Section */}
         <div className="md:w-1/2">
-          <ExpandCollapse />
           <Hierarchy
             menus={menus}
             selectedMenuID={selectedMenuID}
