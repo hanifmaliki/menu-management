@@ -1,6 +1,6 @@
 "use client"
 
-import { getMenus } from '@/services/api';
+import { createMenu, getMenus, updateMenu } from '@/services/api';
 import { useEffect, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import ExpandCollapse from './components/ExpandCollapse';
@@ -15,19 +15,53 @@ function Menus() {
   const [formMode, setFormMode] = useState('update')
   const [formItem, setFormItem] = useState(null)
 
+  const fetchMenus = async () => {
+    const menus: any[] = await getMenus();
+    setMenus(menus);
+
+    const rootMenus = menus.filter(menu => menu.depth === 0)
+    setRootMenus(rootMenus)
+
+    return { menus, rootMenus }
+  };
+
   useEffect(() => {
-    const fetchMenus = async () => {
-      const data: any[] = await getMenus();
-      setMenus(data);
-      let rootMenuTemp = data.filter(menu => menu.depth === 0)
-      setRootMenus(rootMenuTemp)
-      if (rootMenuTemp.length > 0) {
-        setSelectedMenuID(data[0].id)
-        setFormItem(data[0])
+    const execute = async () => {
+      try {
+        const { rootMenus } = await fetchMenus();
+        if (rootMenus.length > 0) {
+          setSelectedMenuID(rootMenus[0].id)
+          setFormItem(rootMenus[0])
+        }
+      } catch (err) {
+        console.log(err)
+        alert('Fetch data failed!')
       }
-    };
-    fetchMenus();
+    }
+    execute()
   }, []);
+
+  const createMenuHandler = async (item: any) => {
+    try {
+      await createMenu(item)
+      alert('Data created!')
+      fetchMenus();
+    } catch (err) {
+      console.log(err)
+      alert('Create data failed!')
+    }
+  }
+
+  const updateMenuHandler = async (item: any) => {
+    try {
+      await updateMenu(item.id, item)
+      alert('Data updated!')
+      fetchMenus();
+    } catch (err) {
+      console.log(err)
+      alert('Update data failed!')
+    }
+  }
 
   return (
     <div>
@@ -37,16 +71,12 @@ function Menus() {
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedMenuID(e.target.value)}
       />
       <ExpandCollapse />
-      <Hierarchy menus={menus.filter(menu => menu.depth !== 0 || menu.id === selectedMenuID)} selectItem={(mode, item) => {
+      <Hierarchy menus={menus} selectedMenuID={selectedMenuID} selectItem={(mode, item) => {
         setFormMode(mode)
         setFormItem(menus.find(menu => menu.id === item.id))
       }} />
-      {
-        formMode == 'update' ?
-          <SaveForm item={formItem} onSubmit={(a: any) => { console.log(a) }} />
-          :
-          <CreateForm item={formItem} onSubmit={(a: any) => { console.log(a) }} />
-      }
+      {formMode == 'update' && <SaveForm item={formItem} onSubmit={updateMenuHandler} />}
+      {formMode == 'create' && <CreateForm item={formItem} onSubmit={createMenuHandler} />}
     </div>
   )
 }

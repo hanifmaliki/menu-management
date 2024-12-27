@@ -33,10 +33,10 @@ function SubMenus ({ subMenus, menus, selectItem = (mode, item) => { } }) {
   );
 }
 
-function Hierarchy ({ menus, selectItem = (mode, item) => { } }) {
+function Hierarchy ({ menus, selectedMenuID, selectItem = (mode, item) => { } }) {
   return menus.map(
     (menu) =>
-      menu.depth === 0 && (
+      menu.depth === 0 && menu.id === selectedMenuID && (
         <div key={menu.id}>
           <div className="flex items-center group">
             <svg

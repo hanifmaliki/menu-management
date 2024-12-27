@@ -3,10 +3,11 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class MenuService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async getMenus() {
     return this.prisma.menu.findMany({
+      orderBy: { createdAt: 'asc' },
       include: { children: true, parent: true },
     });
   }

@@ -1,4 +1,4 @@
-import MenuList from '../components/MenuList';
+import Menus from './menus/page';
 
-const Home: React.FC = () => <MenuList />;
+const Home: React.FC = () => <Menus />;
 export default Home;
