@@ -7,7 +7,7 @@ export class MenuService {
 
   async getMenus() {
     return this.prisma.menu.findMany({
-      include: { children: true },
+      include: { children: true, parent: true },
     });
   }
 

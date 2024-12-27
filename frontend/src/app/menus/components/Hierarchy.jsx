@@ -1,11 +1,9 @@
-import React from 'react';
 
-function SubMenus ({ subMenus, menus }) {
+function SubMenus ({ subMenus, menus, selectItem = (mode, item) => { } }) {
   return (
     <div className="ml-8">
       {subMenus &&
         subMenus.map((subMenu) => {
-          let foundMenu = menus.find((menu) => menu.id === subMenu.id);
           return (
             <div key={subMenu.id}>
               <div className="flex items-center group">
@@ -21,12 +19,13 @@ function SubMenus ({ subMenus, menus }) {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="ml-2 font-medium text-gray-900">{subMenu.name}</span>
-                <button className="ml-2 w-5 h-5 bg-blue-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <span onClick={() => { selectItem('update', subMenu) }} className="ml-2 font-medium text-gray-900 cursor-pointer hover:text-blue-500">{subMenu.name}</span>
+                <button onClick={() => { selectItem('create', subMenu) }}
+                  className="ml-2 w-5 h-5 bg-blue-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   +
                 </button>
               </div>
-              <SubMenus subMenus={foundMenu.children} menus={menus} />
+              <SubMenus subMenus={menus.find((menu) => menu.id === subMenu.id).children} menus={menus} selectItem={selectItem} />
             </div>
           );
         })}
@@ -34,7 +33,7 @@ function SubMenus ({ subMenus, menus }) {
   );
 }
 
-function Hierarchy ({ menus }) {
+function Hierarchy ({ menus, selectItem = (mode, item) => { } }) {
   return menus.map(
     (menu) =>
       menu.depth === 0 && (
@@ -52,12 +51,12 @@ function Hierarchy ({ menus }) {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="ml-2 font-medium text-gray-900">{menu.name}</span>
-            <button className="ml-2 w-5 h-5 bg-blue-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span onClick={() => { selectItem('update', menu) }} className="ml-2 font-medium text-gray-900 cursor-pointer hover:text-blue-500">{menu.name}</span>
+            <button onClick={() => { selectItem('create', menu) }} className="ml-2 w-5 h-5 bg-blue-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               +
             </button>
           </div>
-          <SubMenus subMenus={menu.children} menus={menus} />
+          <SubMenus subMenus={menu.children} menus={menus} selectItem={selectItem} />
         </div>
       )
   );

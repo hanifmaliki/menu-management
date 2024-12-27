@@ -34,11 +34,13 @@ describe('MenuController', () => {
   describe('findMany', () => {
     it('should return an array of menus', async () => {
       const mockMenus = [
-        { id: '1', name: 'Menu 1', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date(),
-          children: [{id: '3', name: 'Children 1', depth: 1, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
+        { id: '2', name: 'Menu 1', depth: 1, parentId: null, createdAt: new Date(), updatedAt: new Date(),
+          parent: {id: '1', name: 'Parent', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date()},
+          children: [{id: '4', name: 'Children 1', depth: 2, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
          },
-        { id: '2', name: 'Menu 2', depth: 1, parentId: '1', createdAt: new Date(), updatedAt: new Date(),
-          children: [{id: '4', name: 'Children 2', depth: 1, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
+        { id: '3', name: 'Menu 2', depth: 1, parentId: '1', createdAt: new Date(), updatedAt: new Date(),
+          parent: {id: '1', name: 'Parent', depth: 0, parentId: null, createdAt: new Date(), updatedAt: new Date()},
+          children: [{id: '5', name: 'Children 2', depth: 2, parentId: null, createdAt: new Date(), updatedAt: new Date()}]
          },
       ];
       jest.spyOn(service, 'getMenus').mockResolvedValue(mockMenus);
