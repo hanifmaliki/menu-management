@@ -1,9 +1,31 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Sidebar ({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Effect to set the initial state based on screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      // On mobile screens (max-width: 768px), the sidebar is closed by default
+      // On larger screens, the sidebar is open by default
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    // Check screen size on initial load
+    checkScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup the event listener on component unmount
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -27,7 +49,7 @@ function Sidebar ({ children }) {
 
       <aside
         id="sidebar-multi-level-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
@@ -37,7 +59,7 @@ function Sidebar ({ children }) {
           </a>
           <button
             onClick={toggleSidebar}
-            className="absolute top-0 right-0 p-2 text-gray-500 dark:text-gray-400 sm:hidden hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="absolute top-0 right-0 p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label="Close sidebar"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +139,7 @@ function Sidebar ({ children }) {
         </div>
       </aside>
 
-      <div className="p-10 sm:ml-64">
+      <div className={`p-10 ${isSidebarOpen ? 'sm:ml-64' : ''}`}>
         {children}
       </div>
     </>
