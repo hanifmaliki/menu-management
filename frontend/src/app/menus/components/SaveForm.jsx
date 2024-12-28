@@ -31,7 +31,7 @@ function SaveForm ({ item, onSubmit = (item) => { } }) {
           disabled
           type="number"
           id="depth"
-          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 opacity-50 cursor-not-allowed"
+          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5 opacity-50 cursor-not-allowed"
         />
       </div>
       <div className="mb-5">
@@ -41,7 +41,7 @@ function SaveForm ({ item, onSubmit = (item) => { } }) {
           disabled
           type="text"
           id="parent"
-          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 opacity-50 cursor-not-allowed"
+          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5 opacity-50 cursor-not-allowed"
         />
       </div>
       <div className="mb-5">
@@ -51,13 +51,13 @@ function SaveForm ({ item, onSubmit = (item) => { } }) {
           value={submittedItem.name || ''}
           type="text"
           id="name"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5"
           required
         />
       </div>
       <button
         type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-3xl text-sm w-2/4 px-5 py-2.5 text-center"
       >
         Save
       </button>

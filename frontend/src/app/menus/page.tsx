@@ -1,6 +1,6 @@
 "use client"
 
-import { createMenu, getMenus, updateMenu } from '@/services/api';
+import { createMenu, deleteMenu, getMenus, updateMenu } from '@/services/api';
 import { useEffect, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import Hierarchy from './components/Hierarchy';
@@ -62,8 +62,19 @@ function Menus() {
     }
   }
 
+  const deleteMenuHandler = async (id: string) => {
+    try {
+      await deleteMenu(id)
+      alert('Data deleted!')
+      fetchMenus();
+    } catch (err) {
+      console.log(err)
+      alert('Delete data failed!')
+    }
+  }
+
   return (
-    <div className="p-4">
+    <div>
       <SelectMenu
         menus={rootMenus}
         selectedMenuID={selectedMenuID}
@@ -79,6 +90,7 @@ function Menus() {
               setFormMode(mode);
               setFormItem(menus.find(menu => menu.id === item.id));
             }}
+            deleteMenu={(id: string) => { confirm("Are you sure want to delete this item?") ? deleteMenuHandler(id) : (() => { })() }}
           />
         </div>
 
