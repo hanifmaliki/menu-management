@@ -7,15 +7,17 @@ import MenuOpen from '@mui/icons-material/MenuOpen';
 import WidgetsOutlined from '@mui/icons-material/WidgetsOutlined';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 function Sidebar ({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const pathname = usePathname();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSystemsMenuOpen, setIsSystemsMenuOpen] = useState(true);
 
   useEffect(() => {
     const checkScreenSize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 640) {
         setIsSidebarOpen(true);
       } else {
         setIsSidebarOpen(false);
@@ -71,9 +73,9 @@ function Sidebar ({ children }) {
               <button
                 type="button"
                 onClick={toggleSystemsMenu}
-                className="flex items-center w-full p-2 transition duration-75 rounded-lg text-white hover:bg-lime-bright hover:text-black"
+                className="flex items-center w-full p-2 transition duration-75 rounded-lg hover:bg-lime-bright hover:text-black"
               >
-                <Folder />
+                <FolderOutlined />
                 <span className="flex-1 ms-3 text-left">Systems</span>
                 <svg className="w-3 h-3" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -84,15 +86,15 @@ function Sidebar ({ children }) {
                   {[
                     { name: "System Code", url: "/system-code" },
                     { name: "Properties", url: "/properties" },
-                    { name: "Menus", url: "/menus", icon: <Widgets /> },
+                    { name: "Menus", url: "/menus" },
                     { name: "API List", url: "/api-list" },
                   ].map(item => (
                     <li key={item.name}>
                       <Link
                         href={item.url}
-                        className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black"
+                        className={`flex items-center p-2 rounded-lg ${item.url === pathname ? 'text-white' : ''} hover:bg-lime-bright hover:text-black`}
                       >
-                        {item.icon || <WidgetsOutlined />}
+                        {item.url === pathname ? <Widgets /> : <WidgetsOutlined />}
                         <span className="ms-3">{item.name}</span>
                       </Link>
                     </li>
@@ -107,9 +109,9 @@ function Sidebar ({ children }) {
               <li key={item.name}>
                 <Link
                   href={item.url}
-                  className="flex items-center p-2 rounded-lg hover:bg-lime-bright hover:text-black"
+                  className={`flex items-center p-2 rounded-lg ${item.url === pathname ? 'text-white' : ''} hover:bg-lime-bright hover:text-black`}
                 >
-                  <FolderOutlined />
+                  {item.url === pathname ? <Folder /> : <FolderOutlined />}
                   <span className="ms-3">{item.name}</span>
                 </Link>
               </li>
@@ -118,7 +120,7 @@ function Sidebar ({ children }) {
         </div>
       </aside>
 
-      <div className={`p-10 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-16'}`}>
+      <div className={`p-10 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-12'}`}>
         {children}
       </div>
     </>
