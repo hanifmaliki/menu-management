@@ -1,121 +1,82 @@
-"use client"
+'use client';
 
-import { createMenu, deleteMenu, getMenus, updateMenu } from '@/services/api';
-import { useEffect, useState } from 'react';
+import {
+  createMenuThunk,
+  deleteMenuThunk,
+  fetchMenus,
+  setFormItem,
+  setFormMode,
+  setSelectedMenuID,
+  updateMenuThunk,
+} from '@/features/menuSlice';
+import { AppDispatch, RootState } from '@/store';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CreateForm from './components/CreateForm';
 import Hierarchy from './components/Hierarchy';
 import SaveForm from './components/SaveForm';
 import SelectMenu from './components/SelectMenu';
 
 function Menus() {
-  const [menus, setMenus] = useState<any[]>([]);
-  const [rootMenus, setRootMenus] = useState<any[]>([]);
-  const [selectedMenuID, setSelectedMenuID] = useState('')
-  const [formMode, setFormMode] = useState('update')
-  const [formItem, setFormItem] = useState(null)
-
-  const fetchMenus = async () => {
-    const menus: any[] = await getMenus();
-    setMenus(menus);
-
-    const rootMenus = menus.filter(menu => menu.depth === 0)
-    setRootMenus(rootMenus)
-
-    return { menus, rootMenus }
-  };
+  const dispatch = useDispatch<AppDispatch>();
+  const { menus, rootMenus, selectedMenuID, formMode, formItem } = useSelector((state: RootState) => state.menu);
 
   useEffect(() => {
-    const execute = async () => {
-      try {
-        const { rootMenus } = await fetchMenus();
-        if (rootMenus.length > 0) {
-          setSelectedMenuID(rootMenus[0].id)
-          setFormItem(rootMenus[0])
-        }
-      } catch (err) {
-        console.log(err)
-        alert('Fetch data failed!')
-      }
-    }
-    execute()
+    dispatch(fetchMenus());
   }, []);
 
-  const createMenuHandler = async (item: any) => {
-    try {
-      await createMenu(item)
-      alert('Data created!')
-      fetchMenus();
-    } catch (err) {
-      console.log(err)
-      alert('Create data failed!')
-    }
-  }
-
-  const updateMenuHandler = async (item: any) => {
-    try {
-      await updateMenu(item.id, item)
-      alert('Data updated!')
-      fetchMenus();
-    } catch (err) {
-      console.log(err)
-      alert('Update data failed!')
-    }
-  }
-
-  const deleteMenuHandler = async (id: string) => {
-    try {
-      await deleteMenu(id)
-      alert('Data deleted!')
-      fetchMenus();
-    } catch (err) {
-      console.log(err)
-      alert('Delete data failed!')
-    }
-  }
+  useEffect(() => {
+    dispatch(setFormItem(rootMenus.find((menu: any) => menu.id === selectedMenuID)))
+    dispatch(setFormMode('update'))
+  }, [selectedMenuID])
 
   return (
     <div>
       <SelectMenu
         menus={rootMenus}
         selectedMenuID={selectedMenuID}
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedMenuID(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => dispatch(setSelectedMenuID(e.target.value))}
       />
       <div className="flex flex-col md:flex-row gap-4 mt-4">
-        {/* Hierarchy and ExpandCollapse Section */}
+        {/* Hierarchy Section */}
         <div className="md:w-1/2">
           <Hierarchy
             menus={menus}
             selectedMenuID={selectedMenuID}
             selectItem={(mode, item) => {
-              setFormMode(mode);
-              setFormItem(menus.find(menu => menu.id === item.id));
+              dispatch(setFormMode(mode));
+              dispatch(setFormItem(menus.find((menu: any) => menu.id === item.id)));
             }}
-            deleteMenu={(id: string) => { confirm("Are you sure want to delete this item?") ? deleteMenuHandler(id) : (() => { })() }}
+            deleteMenu={(id) => {
+              if (confirm('Are you sure want to delete this item?')) {
+                dispatch(deleteMenuThunk(id));
+              }
+            }}
           />
         </div>
 
-        {/* Form Section - Visible on Larger Screens */}
+        {/* Form Section */}
         <div className="hidden md:block md:w-1/2">
           {formMode === 'update' && (
-            <SaveForm item={formItem} onSubmit={updateMenuHandler} />
+            <SaveForm item={formItem} onSubmit={(item) => dispatch(updateMenuThunk(item))} />
           )}
           {formMode === 'create' && (
-            <CreateForm item={formItem} onSubmit={createMenuHandler} />
+            <CreateForm item={formItem} onSubmit={(item) => dispatch(createMenuThunk(item))} />
           )}
         </div>
       </div>
 
-      {/* Form Section - Visible on Mobile */}
+      {/* Mobile Form Section */}
       <div className="block md:hidden mt-8">
         {formMode === 'update' && (
-          <SaveForm item={formItem} onSubmit={updateMenuHandler} />
+          <SaveForm item={formItem} onSubmit={(item) => dispatch(updateMenuThunk(item))} />
         )}
         {formMode === 'create' && (
-          <CreateForm item={formItem} onSubmit={createMenuHandler} />
+          <CreateForm item={formItem} onSubmit={(item) => dispatch(createMenuThunk(item))} />
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default Menus
+export default Menus;
