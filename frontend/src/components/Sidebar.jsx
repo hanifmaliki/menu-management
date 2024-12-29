@@ -42,7 +42,7 @@ function Sidebar ({ children }) {
     <>
       <button
         onClick={toggleSidebar}
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 sm:absolute"
+        className="inline-flex items-center p-2 mt-2 ms-6 sm:ms-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 sm:absolute"
       >
         <span className="sr-only">Open sidebar</span>
         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ function Sidebar ({ children }) {
         </div>
       </aside>
 
-      <div className={`p-10 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-12'}`}>
+      <div className={`p-8 pt-4 sm:pt-8 sm:p-10 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-12'}`}>
         {children}
       </div>
     </>

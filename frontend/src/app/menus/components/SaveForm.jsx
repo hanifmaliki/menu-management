@@ -31,7 +31,7 @@ function SaveForm ({ item, onSubmit = (item) => { } }) {
           disabled
           type="number"
           id="depth"
-          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5 opacity-50 cursor-not-allowed"
+          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-2/4 p-2.5 opacity-50 cursor-not-allowed"
         />
       </div>
       <div className="mb-5">
@@ -41,7 +41,7 @@ function SaveForm ({ item, onSubmit = (item) => { } }) {
           disabled
           type="text"
           id="parent"
-          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5 opacity-50 cursor-not-allowed"
+          className="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-2/4 p-2.5 opacity-50 cursor-not-allowed"
         />
       </div>
       <div className="mb-5">
@@ -51,7 +51,7 @@ function SaveForm ({ item, onSubmit = (item) => { } }) {
           value={submittedItem.name || ''}
           type="text"
           id="name"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-2/4 p-2.5"
           required
         />
       </div>
