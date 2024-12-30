@@ -6,9 +6,7 @@ const initialState = {
   rootMenus: [],
   selectedMenuID: '',
   formMode: 'update',
-  formItem: null,
-  status: 'idle',
-  error: null,
+  formItem: {},
   isFirstFetch: true,
 };
 
@@ -20,18 +18,33 @@ export const fetchMenus = createAsyncThunk('menu/fetchMenus', async () => {
 });
 
 export const createMenuThunk = createAsyncThunk('menu/createMenu', async (item: any, { dispatch }) => {
-  await createMenu(item);
-  dispatch(fetchMenus());
+  try {
+    await createMenu(item);
+    dispatch(fetchMenus());
+    alert('Menu created successfully!');
+  } catch (error) {
+    alert('Failed to create menu!');
+  }
 });
 
 export const updateMenuThunk = createAsyncThunk('menu/updateMenu', async (item: any, { dispatch }) => {
-  await updateMenu(item.id, item);
-  dispatch(fetchMenus());
+  try {
+    await updateMenu(item.id, item);
+    dispatch(fetchMenus());
+    alert('Menu updated successfully!');
+  } catch (error) {
+    alert('Failed to update menu!');
+  }
 });
 
 export const deleteMenuThunk = createAsyncThunk('menu/deleteMenu', async (id: string, { dispatch }) => {
-  await deleteMenu(id);
-  dispatch(fetchMenus());
+  try {
+    await deleteMenu(id);
+    dispatch(fetchMenus());
+    alert('Menu deleted successfully!');
+  } catch (error) {
+    alert('Failed to delete menu!');
+  }
 });
 
 // Slice
@@ -51,11 +64,7 @@ const menuSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMenus.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchMenus.fulfilled, (state: any, action) => {
-        state.status = 'succeeded';
         state.menus = action.payload.menus;
         state.rootMenus = action.payload.rootMenus;
         
@@ -65,8 +74,7 @@ const menuSlice = createSlice({
         }
       })
       .addCase(fetchMenus.rejected, (state: any, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
+        alert('Failed to fetch menus!');
       });
   },
 });
