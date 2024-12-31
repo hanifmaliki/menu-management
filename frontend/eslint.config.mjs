@@ -22,6 +22,7 @@ const eslintConfig = [
       // Custom rules can be added or modified here
       "@typescript-eslint/no-explicit-any": "off", // Disable the 'no-explicit-any' rule
       "@typescript-eslint/no-unused-expressions": "warn", // Warn instead of error for unused expressions
+      "@typescript-eslint/no-unused-vars": "warn"
     },
   },
 ];
